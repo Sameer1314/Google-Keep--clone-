@@ -1,30 +1,30 @@
 {
-  "short_name": "Google Keep Clone",
-  "name": "Google Keep Clone",
-  "description": "A Google Keep Clone made with React and MUI",
+  "short_name": "Tento",
+  "name": "Tento-A Note Taking App",
+  "description": "A Note Taking App made with React and MUI",
   "icons": [
     {
-      "src": "logo16.png",
+      "src": "note.png",
       "sizes": "16x16",
       "type": "image/png"
     },
     {
-      "src": "logo32.png",
+      "src": "note.png",
       "sizes": "32x32",
       "type": "image/png"
     },
     {
-      "src": "logo192.png",
+      "src": "note.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "note.png",
       "type": "image/png",
       "sizes": "512x512"
     },
     {
-      "src": "maskable.png",
+      "src": "note.png",
       "sizes": "218x218",
       "type": "image/png",
       "purpose": "any maskable"

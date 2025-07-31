@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
-import logo from "../../../Assets/Images/google-keep-logo.png";
+import logo from "../../../Assets/Images/note.png";
 import { useLocation } from "react-router-dom";
 import { useThemeContext } from "../../Theme/ThemeContext";
 
@@ -47,7 +47,7 @@ const Header = ({ handleDrawer, open }) => {
           {!pathName && (
             <img src={logo} alt="logo" style={{ width: 30, marginRight: 8 }} />
           )}
-          <Heading>{pathName || "Keep"}</Heading>
+          <Heading>{pathName || "Tento"}</Heading>
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center" }}>
