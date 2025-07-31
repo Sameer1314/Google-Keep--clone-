@@ -1,12 +1,20 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import { Box, Link, Drawer as MuiDrawer, Typography } from "@mui/material";
+import {
+  Box,
+  Link,
+  Drawer as MuiDrawer,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import Navbar from "../Navbar/Navbar";
 import NavList from "./NavList";
 import { useThemeContext } from "../../Theme/ThemeContext";
 
 const drawerWidth = 280;
 
+// Open style
 const openedMixin = (theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create("width", {
@@ -14,10 +22,11 @@ const openedMixin = (theme) => ({
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: "hidden",
-  marginTop: 10,
   border: "none",
+  marginTop: 10,
 });
 
+// Collapsed style
 const closedMixin = (theme) => ({
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
@@ -28,14 +37,16 @@ const closedMixin = (theme) => ({
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
-  marginTop: 10,
   border: "none",
+  marginTop: 10,
 });
 
+// Top spacing for drawer content
 const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
+// Styled Drawer for desktop (mini variant)
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -52,9 +63,6 @@ const Drawer = styled(MuiDrawer, {
     "& .MuiDrawer-paper": {
       ...openedMixin(theme),
       color: theme.palette.text.primary,
-      "& .MuiSvgIcon-root": {
-        color: theme.palette.mode === "dark" ? "#9AA0A6" : "inherit",
-      },
     },
   }),
   ...(!open && {
@@ -62,28 +70,37 @@ const Drawer = styled(MuiDrawer, {
     "& .MuiDrawer-paper": {
       ...closedMixin(theme),
       color: theme.palette.text.primary,
-      "& .MuiSvgIcon-root": {
-        color: theme.palette.mode === "dark" ? "#9AA0A6" : "inherit",
-      },
     },
   }),
 }));
 
-// Receive open state and handler from parent (App.js)
+// MAIN SIDEBAR COMPONENT
 const Sidebar = ({ open, handleDrawer }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { mode } = useThemeContext();
 
   return (
     <Box sx={{ display: "flex" }}>
-      {/* App bar with theme toggle and menu button */}
+      {/* Top Navbar */}
       <Navbar open={open} handleDrawer={handleDrawer} />
 
-      {/* Persistent drawer */}
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader />
-        <NavList open={open} setOpen={handleDrawer} />
-
-        {open && (
+      {isMobile ? (
+        // Mobile: temporary overlay drawer
+        <MuiDrawer
+          variant="temporary"
+          open={open}
+          onClose={handleDrawer}
+          ModalProps={{ keepMounted: true }} // improves mobile performance
+          sx={{
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              color: theme.palette.text.primary,
+            },
+          }}
+        >
+          <DrawerHeader />
+          <NavList open={open} setOpen={handleDrawer} />
           <Box
             sx={{ position: "absolute", bottom: 0, left: 0, right: 0, p: 2 }}
           >
@@ -99,8 +116,31 @@ const Sidebar = ({ open, handleDrawer }) => {
               </Link>
             </Typography>
           </Box>
-        )}
-      </Drawer>
+        </MuiDrawer>
+      ) : (
+        // Desktop: permanent drawer with collapsible style
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader />
+          <NavList open={open} setOpen={handleDrawer} />
+          {open && (
+            <Box
+              sx={{ position: "absolute", bottom: 0, left: 0, right: 0, p: 2 }}
+            >
+              <Typography variant="body2" color="textSecondary">
+                Created by:{" "}
+                <Link
+                  underline="hover"
+                  href="https://github.com/Sameer1314"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Sameer Shivgan
+                </Link>
+              </Typography>
+            </Box>
+          )}
+        </Drawer>
+      )}
     </Box>
   );
 };
